@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Six Flags | Reserva tu aventura</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      
+      color: #222;
+      background: #f4f4f4;
+    }
+    header {
+      max-width: 1000px;
+      margin: 0 auto 20px;
+      padding: 24px;
+      text-align: center;
+      color: white;
+      background: #c8102e;
+      border-radius: 12px;
+      border-bottom: 7px solid #111;
+    }
+    header h1 { margin: 0 0 8px; }
+    header p { margin: 0; }
+    main { max-width: 1000px; margin: auto; }
+    form, #seccionTabla {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px #00000012;
+    }
+    h2 { margin-top: 0; }
+    .campos {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+    .campo { display: flex; flex-direction: column; gap: 6px; }
+    .campo label { font-weight: bold; }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      font: inherit;
+    }
+    .botones { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    button {
+      padding: 10px 15px;
+      border: 0;
+      border-radius: 6px;
+      background: #c8102e;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover { background: #9f0c24; }
+    button:disabled { background: #999; cursor: not-allowed; }
+    #estado { min-height: 24px; font-weight: bold; }
+    #seccionTabla { display: none; margin-top: 20px; overflow-x: auto; }
+    #buscador { max-width: 350px; margin: 10px 0 15px; }
+    table { border-collapse: collapse; width: 100%; min-width: 1300px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #111; color: white; }
+    td button { margin: 3px; }
+    @media (max-width: 650px) {
+      body { padding: 12px; }
+      .campos { grid-template-columns: 1fr; }
+      form, #seccionTabla { padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎢 Six Flags</h1>
+    <p>¡Reserva tu aventura y prepárate para la diversión!</p>
+  </header>
+
+  <main>
+    <form id="formulario">
+      <h2>Formulario de visita</h2>
+      <p>Completa los 10 datos para registrar tu visita al parque.</p>
+      <input type="hidden" id="id">
+
+      <div class="campos">
+        <div class="campo">
+          <label for="nombre">1. Nombre completo</label>
+          <input type="text" id="nombre" required>
+        </div>
+        <div class="campo">
+          <label for="edad">2. Edad</label>
+          <input type="number" id="edad" required min="1" max="120">
+        </div>
+        <div class="campo">
+          <label for="correo">3. Correo electrónico</label>
+          <input type="email" id="correo" required>
+        </div>
+        <div class="campo">
+          <label for="telefono">4. Número de teléfono</label>
+          <input type="tel" id="telefono" required>
+        </div>
+        <div class="campo">
+          <label for="fechaVisita">5. Fecha de visita</label>
+          <input type="date" id="fechaVisita" required>
+        </div>
+        <div class="campo">
+          <label for="visitantes">6. Número de visitantes</label>
+          <input type="number" id="visitantes" required min="1" max="50">
+        </div>
+        <div class="campo">
+          <label for="boleto">7. Tipo de boleto</label>
+          <select id="boleto" required>
+            <option value="">Selecciona una opción</option>
+            <option value="General">Boleto general</option>
+            <option value="Pase de temporada">Pase de temporada</option>
+            <option value="Pase VIP">Pase VIP / acceso especial</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="atraccion">8. Atracción o área favorita</label>
+          <select id="atraccion" required>
+            <option value="">Selecciona una opción</option>
+            <option value="Montañas rusas">Montañas rusas</option>
+            <option value="Juegos acuáticos">Juegos acuáticos</option>
+            <option value="Juegos familiares">Juegos familiares</option>
+            <option value="Espectáculos">Espectáculos</option>
+            <option value="Todavía no sé">Todavía no sé</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="horario">9. Horario aproximado de llegada</label>
+          <select id="horario" required>
+            <option value="">Selecciona una opción</option>
+            <option value="A primera hora">A primera hora</option>
+            <option value="Mediodía">Al mediodía</option>
+            <option value="Por la tarde">Por la tarde</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="pago">10. Método de pago preferido</label>
+          <select id="pago" required>
+            <option value="">Selecciona una opción</option>
+            <option value="Tarjeta">Tarjeta</option>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Pago en línea">Pago en línea</option>
+            <option value="Ya tengo boleto">Ya tengo boleto</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="botones">
+        <button type="button" id="btnRegistrar">Registrar visita</button>
+        <button type="button" id="btnConsultar">Consultar registros</button>
+        <button type="button" id="btnModificar" disabled>Modificar</button>
+        <button type="button" id="btnEliminar" disabled>Eliminar</button>
+        <button type="button" id="btnLimpiar">Limpiar formulario</button>
+      </div>
+    </form>
+
+    <p id="estado" role="status"></p>
+
+    <section id="seccionTabla">
+      <h2>Registros de visitantes</h2>
+      <button type="button" id="btnCerrar">Cerrar tabla</button>
+      <input type="text" id="buscador" placeholder="Buscar por nombre...">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha de registro</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Fecha de visita</th>
+            <th>Visitantes</th>
+            <th>Tipo de boleto</th>
+            <th>Atracción favorita</th>
+            <th>Horario</th>
+            <th>Método de pago</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    // Conserva aquí la URL de tu implementación de Google Apps Script.
+    var URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzaXIM_VFiatzo5Co2ObEgMBb8r5Tx5SNfCud0d8G_IFBElMgMZqMd4OIPARgK5affl/exec";
+    var registros = [];
+    var tablaVisible = false;
+
+    var campos = [
+      "nombre", "edad", "correo", "telefono", "fechaVisita",
+      "visitantes", "boleto", "atraccion", "horario", "pago"
+    ];
+
+    
+function enviar(datos) {
+  return fetch(URL_SCRIPT, {
+    method: "POST",
+    body: new URLSearchParams(datos)
+  })
+  .then(function (r) {
+    return r.text();
+  })
+  .then(function (texto) {
+    if (texto.trim() === "OK") {
+      return { ok: true };
+    }
+
+    throw new Error(texto);
+  });
+}
+
+
+    function datosFormulario() {
+      var datos = {};
+      campos.forEach(function (campo) {
+        datos[campo] = document.getElementById(campo).value;
+      });
+      return datos;
+    }
+
+    function actualizarBotones() {
+      var hayRegistro = document.getElementById("id").value !== "";
+      document.getElementById("btnRegistrar").disabled = hayRegistro;
+      document.getElementById("btnModificar").disabled = !hayRegistro;
+      document.getElementById("btnEliminar").disabled = !hayRegistro;
+    }
+
+    function limpiarFormulario() {
+      document.getElementById("formulario").reset();
+      document.getElementById("id").value = "";
+      actualizarBotones();
+    }
+
+    document.getElementById("btnLimpiar").onclick = limpiarFormulario;
+
+    document.getElementById("btnRegistrar").onclick = function () {
+      var formulario = document.getElementById("formulario");
+      if (!formulario.reportValidity()) return;
+
+      var datos = datosFormulario();
+      datos.accion = "guardar";
+      document.getElementById("estado").textContent = "Registrando visita...";
+
+      enviar(datos).then(function (respuesta) {
+        terminarAccion(respuesta, "¡Visita registrada correctamente!");
+      }).catch(mostrarError);
+    };
+
+    document.getElementById("btnConsultar").onclick = function () {
+      tablaVisible = true;
+      document.getElementById("seccionTabla").style.display = "block";
+      document.getElementById("estado").textContent = "Consultando registros...";
+      cargarRegistros(function () {
+        document.getElementById("estado").textContent = "";
+      });
+    };
+
+    function cargarRegistros(alTerminar) {
+      fetch(URL_SCRIPT).then(function (r) {
+        if (!r.ok) throw new Error("No se pudieron cargar los registros.");
+        return r.json();
+      }).then(function (datos) {
+        registros = datos;
+        mostrarTabla();
+        if (alTerminar) alTerminar();
+      }).catch(mostrarError);
+    }
+
+    function mostrarTabla() {
+      var filtro = document.getElementById("buscador").value.trim().toLowerCase();
+      var tabla = document.getElementById("tabla");
+      tabla.innerHTML = "";
+
+      registros.forEach(function (reg) {
+        if (String(reg.nombre || "").toLowerCase().indexOf(filtro) === -1) return;
+
+        var tr = document.createElement("tr");
+        agregarCelda(tr, reg.fecha ? new Date(reg.fecha).toLocaleString() : "");
+        campos.forEach(function (campo) { agregarCelda(tr, reg[campo] || ""); });
+
+        var td = document.createElement("td");
+        var btnModificarFila = document.createElement("button");
+        btnModificarFila.textContent = "Modificar";
+        btnModificarFila.onclick = function () { cargarEnFormulario(reg); };
+
+        var btnEliminarFila = document.createElement("button");
+        btnEliminarFila.textContent = "Eliminar";
+        btnEliminarFila.onclick = function () { eliminar(reg.id); };
+
+        td.appendChild(btnModificarFila);
+        td.appendChild(btnEliminarFila);
+        tr.appendChild(td);
+        tabla.appendChild(tr);
+      });
+    }
+
+    function agregarCelda(fila, texto) {
+      var td = document.createElement("td");
+      td.textContent = texto;
+      fila.appendChild(td);
+    }
+
+    document.getElementById("buscador").oninput = mostrarTabla;
+
+    document.getElementById("btnCerrar").onclick = function () {
+      tablaVisible = false;
+      document.getElementById("seccionTabla").style.display = "none";
+      document.getElementById("buscador").value = "";
+      document.getElementById("tabla").innerHTML = "";
+    };
+
+    function cargarEnFormulario(reg) {
+      document.getElementById("id").value = reg.id;
+      campos.forEach(function (campo) {
+        document.getElementById(campo).value = reg[campo] || "";
+      });
+      document.getElementById("estado").textContent =
+        "Modifica los datos y después presiona «Modificar».";
+      actualizarBotones();
+      window.scrollTo(0, 0);
+      document.getElementById("nombre").focus();
+    }
+
+    document.getElementById("btnModificar").onclick = function () {
+      var id = document.getElementById("id").value;
+      if (!id) {
+        alert("Primero selecciona un registro de la tabla.");
+        return;
+      }
+      if (!document.getElementById("formulario").reportValidity()) return;
+
+      var datos = datosFormulario();
+      datos.accion = "editar";
+      datos.id = id;
+      document.getElementById("estado").textContent = "Modificando registro...";
+
+      enviar(datos).then(function (respuesta) {
+        terminarAccion(respuesta, "¡Registro modificado correctamente!");
+      }).catch(mostrarError);
+    };
+
+    document.getElementById("btnEliminar").onclick = function () {
+      eliminar(document.getElementById("id").value);
+    };
+
+    function eliminar(id) {
+      if (!id) {
+        alert("Primero selecciona un registro.");
+        return;
+      }
+      if (!confirm("¿Seguro que quieres eliminar este registro?")) return;
+
+      document.getElementById("estado").textContent = "Eliminando registro...";
+      enviar({ accion: "eliminar", id: id }).then(function (respuesta) {
+        terminarAccion(respuesta, "Registro eliminado.");
+      }).catch(mostrarError);
+    }
+
+    function terminarAccion(respuesta, mensajeOk) {
+      if (respuesta && respuesta.ok) {
+        document.getElementById("estado").textContent = mensajeOk;
+        limpiarFormulario();
+        if (tablaVisible) cargarRegistros();
+      } else {
+        document.getElementById("estado").textContent =
+          "No se pudo completar la acción: " + ((respuesta && respuesta.mensaje) || "revisa el servidor.");
+      }
+    }
+
+    function mostrarError(error) {
+      document.getElementById("estado").textContent =
+        "Error de conexión. Revisa la URL y el código de Google Apps Script. " + error.message;
+    }
+
+    actualizarBotones();
+  </script>
+</body>
+</html>
